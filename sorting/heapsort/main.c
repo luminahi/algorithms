@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 #define MAX_SIZE 16
 
@@ -67,6 +68,12 @@ void printHeap(MinHeap* heap) {
     printf("\n\n");
 }
 
+void printArray(int* array) {
+    for (int i = 0; i < MAX_SIZE; i++) {
+        printf("[%d] ", array[i]);
+    }
+}
+
 int extractMin(MinHeap* heap) {
     if (heap->size <= 0) {
         printf("Heap is empty\n");
@@ -82,11 +89,12 @@ int extractMin(MinHeap* heap) {
 }
 
 int* sort(MinHeap* heap) {
-    int* sorted_array = (int*) malloc(sizeof(int) * MAX_SIZE);
+    int size = heap->size - 1;
 
-    for (int i = 0; i < MAX_SIZE; i++) sorted_array[i] = extractMin(heap);
-
-    return sorted_array;
+    for (int i = 0; i < MAX_SIZE; i++) {
+        heap->data[size] = extractMin(heap);
+        size--;
+    }
 }
 
 int main(int argc, char * argv[]) {
@@ -97,15 +105,16 @@ int main(int argc, char * argv[]) {
     for (int i = 0; i < MAX_SIZE; i++) heap.data[i] = 0;
 
     // insert random values to heap
-    for (int i = MAX_SIZE - 1; i >= 0; i--) insert(&heap, rand() % 255);
+    srand(time(0));
+    for (int i = MAX_SIZE - 1; i >= 0; i--) {
+        insert(&heap, rand() % 255);
+    }
 
     printHeap(&heap);
 
-    int* sorted_array = sort(&heap);
+    sort(&heap);
+    
+    printArray(heap.data);
 
-    // print the sorted array
-    for (int i = 0; i < MAX_SIZE; i++) printf("[%d] ", sorted_array[i]);
-
-    free(sorted_array);
     return 0;
 }
