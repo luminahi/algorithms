@@ -1,15 +1,21 @@
 #include <stdio.h>
 #include "merge_sort.h"
+#include <time.h>
+#include <stdlib.h>
+
+#define MAX_SIZE 102400000
 
 int main(int argc, char* argv[]) {
-    int array[] = {20, 18, 16, 10, -5};
-    int length = sizeof(array)/sizeof(int);
+    int* array = (int*) malloc(sizeof(int) * MAX_SIZE);
 
-    merge_sort(array, 0, length - 1);
-
-    for (int i = 0; i < length; i++) {
-        printf("[%d] ", array[i]);
+    srand(time(0));
+    for (int i = 0; i < MAX_SIZE; i++) {
+	array[i] = rand();
     }
+
+    merge_sort(array, 0, MAX_SIZE - 1);
+    
+    printf("[%d] ", MAX_SIZE);
 
     return 0;
 }
